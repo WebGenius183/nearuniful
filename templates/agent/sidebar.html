@@ -1,0 +1,21 @@
+<!-- templates/agent/sidebar.html -->
+<div id="menu" class="fixed top-0 left-0 h-screen w-64 bg-amber-700 text-white flex flex-col transition-transform duration-300 z-20 pt-20 -translate-x-full md:translate-x-0">
+    <ul class="space-y-4 px-6 font-bold">
+        <li>
+            <a href="{% url 'agent_dashboard' %}" class="block hover:text-amber-700 hover:bg-white p-3 rounded-2xl transition">Dashboard</a>
+        </li>
+        <li>
+            <a href="{% url 'add_apartment' %}" class="block hover:text-amber-700 hover:bg-white p-3 rounded-2xl transition">Add Apartment</a>
+        </li>
+        <li>
+            <a href="{% url 'my_listings' %}" class="block hover:text-amber-700 hover:bg-white p-3 rounded-2xl transition">My Listings</a>
+        </li>
+        <li>
+            <a href="{% url 'profile' %}" class="block hover:text-amber-700 hover:bg-white p-3 rounded-2xl transition">Profile</a>
+        </li>
+    </ul>
+
+    <div class="mt-auto mb-10 px-6">
+        <a href="{% url 'logout' %}" class="block bg-white text-amber-700 p-3 rounded-2xl text-center hover:bg-gray-200 transition">Logout</a>
+    </div>
+</div>

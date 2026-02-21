@@ -1,0 +1,144 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+    <!-- Hero Section -->
+    <div class="hero justify-center relative w-full sm:h-150 h-120 bg-white flex items-center">
+        <div class="h-full w-full bg-slate-900/50 absolute "></div>
+        <div class=" space-y-10 z-8">
+            <div class="text-center w-full mt-10">
+            <p class="home font-extrabold text-2xl sm:text-5xl pl-2 pr-2 text-white drop-shadow-md">
+                Find Your Home Away From Home
+            </p>
+            <span class="block w-24 h-1 bg-amber-700 mx-auto mt-4 rounded-full"></span>
+        </div>
+            <div class="search space-x-3">
+                <form method="GET" action="{% url 'apartment_list' %}" 
+                class="flex justify-center gap-3 mt-6 flex-wrap">
+                <input type="text" name="q" placeholder="Search by University"
+                    class="shadow-md p-4 sm:w-80 rounded-lg"
+                    value="{{ request.GET.q }}">
+                <button type="submit"
+                    class="bg-amber-700 text-white P-4 px-6 rounded-lg font-bold hover:bg-amber-800 transition">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </form>
+            </div>
+
+            <div class="benefits flex gap-6 justify-center mt-10">
+                <div class="box bg-slate-900/70 sm:p-6  p-2 sm:w-40 sm:h-32 flex flex-col items-center justify-center shadow-xl rounded-xl">
+                    <i class="fa-regular fa-circle-check text-2xl text-green-500 mb-2"></i>
+                    <p class="font-medium hidden sm:block text-white">Verified</p>
+                </div>
+                
+                <div class="box bg-slate-900/70 sm:p-6 p-2 sm:w-40 sm:h-32 flex flex-col items-center justify-center shadow-xl rounded-xl">
+                    <i class="fa-solid fa-tent text-2xl text-blue-500 mb-2"></i>
+                    <p class="font-medium hidden sm:block text-white">Close to Campus</p>
+                </div>
+
+                <div class="box bg-slate-900/70 sm:p-6 p-2 sm:w-40 sm:h-32 flex flex-col items-center justify-center shadow-xl rounded-xl">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-purple-500 mb-2"></i>
+                    <p class="font-medium hidden sm:block text-white">Student Only</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured / Boosted Apartments -->
+    <div class="mt-12 mb-12 px-5 sm:px-10">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Featured Homes</h2>
+            <a href="{% url 'apartment_list' %}" 
+            class="text-amber-700 font-semibold hover:underline">
+            View All →
+            </a>
+        </div>
+        <div class="Featured mt-5 mb-6 pl-3 pr-3">
+        <div class="cur mt-4 w-full">
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 :grid-cols-6 gap-3 place-items-center">
+                {% for apt in apartments %}
+                    <div class="container min-w-40 max-w-65 rounded-2xl relative space-y-3 bg-white shadow-xl">
+                            <!-- Verified / Unverified Badge -->
+                            <div class="absolute top-3 left-3 bg-white/90 pl-2 pr-2 py-1 rounded-full shadow text-sm font-semibold flex items-center gap-1">
+                                {% if apt.is_approved %}
+                                    Verified <i class="fa-regular fa-circle-check text-green-500"></i>
+                                {% else %}
+                                    Unverified
+                                {% endif %}
+                            </div>
+
+                            <!-- Boost Badge -->
+                            {% if apt.is_boosted %}
+                                <div class="absolute top-11 left-3 bg-amber-700 text-white px-2 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                                    Boosted
+                                </div>
+                            {% endif %}
+
+                            <a href="{% url 'apartment_detail' apt.slug %}">
+                                {% if apt.images.exists %}
+                                    <img src="{{ apt.images.first.image.url }}" alt="{{ apt.title }}" class="w-full h-48 object-cover rounded-t-2xl" />
+                                {% else %}
+                                    <img src="{% static 'images/default-apartment.jpg' %}" alt="No Image" class="w-full h-48 object-cover rounded-t-2xl" />
+                                {% endif %}
+                                <div class="details p-2">
+                                    <p class="text-md font-bold">{{ apt.title }}</p>
+                                    <p class="text-sm text-zinc-600">{{ apt.address }}</p>
+                                    <p class="text-sm text-zinc-600"><i class="fa-solid fa-location-crosshairs text-amber-700"></i>{{ apt.distance }}</p>
+                                    <p class="sm:text-md text-md "><strong class="text-amber-700">₦{{ apt.price }}/{{ apt.period }}</strong></p>
+                                </div>
+                            </a>
+                    </div>
+            
+                {% empty %}
+                    <p class="col-span-full text-center text-gray-500 py-10">No apartments found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- Why Choose Us -->
+    <div class="flex flex-col sm:flex-row justify-center bg-orange-100 py-12 px-5 sm:px-10 gap-6">
+
+        <div class="flex-1 flex items-center p-6 bg-white shadow-xl rounded-3xl space-x-4">
+            <i class="fa-solid fa-bolt text-2xl text-amber-700"></i>
+            <div>
+                <p class="text-lg font-bold">Fast & Easy Search</p>
+                <p class="text-sm text-gray-600">Find apartments instantly near your campus.</p>
+            </div>
+        </div>
+
+        <div class="flex-1 flex items-center p-6 bg-white shadow-xl rounded-3xl space-x-4">
+            <i class="fa-solid fa-shield-halved text-2xl text-amber-700"></i>
+            <div>
+                <p class="text-lg font-bold">Verified Listings</p>
+                <p class="text-sm text-gray-600">All apartments go through approval.</p>
+            </div>
+        </div>
+
+        <div class="flex-1 flex items-center p-6 bg-white shadow-xl rounded-3xl space-x-4">
+            <i class="fa-solid fa-headset text-2xl text-amber-700"></i>
+            <div>
+                <p class="text-lg font-bold">24/7 Support</p>
+                <p class="text-sm text-gray-600">We’re always available to help.</p>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="text-center py-16 px-6">
+        <h3 class="text-2xl font-bold mb-2">Need Help? Let's Connect</h3>
+        <p class="text-gray-600 mb-6">If you have any questions, feel free to reach out.</p>
+
+        <div class="flex justify-center gap-8">
+            <a href="{% url 'contact' %}" 
+            class="bg-amber-700 text-white px-6 py-3 rounded-lg hover:bg-amber-800 transition">
+            Contact Us
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

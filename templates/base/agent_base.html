@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/883ba9c28f.js" crossorigin="anonymous"></script>
+
+    <link rel="shortcut icon" href="{% static 'Favicon.png' %}" type="image/x-icon" />
+    <title>{% block title %}NearUni{% endblock %}</title>
+</head>
+
+<body class="bg-gray-100 flex min-h-screen">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 bg-white shadow-md z-30 flex items-center justify-between px-6 py-3">
+        <div class="flex items-center gap-4">
+            <i id="bar" class="fa-solid fa-bars text-amber-700 text-2xl cursor-pointer hover:text-black"></i>
+            <img src="{% static 'Favicon.png' %}" class="h-12" alt="NearUni Logo"/>
+            <span class="font-bold text-amber-700 text-xl">NearUni</span>
+        </div>
+        <div>
+            <span class="hidden md:inline-block text-gray-700">Hello, {{ request.user.username }}</span>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    <div class="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 w-11/12 sm:w-96">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-2 p-3 rounded shadow 
+                    {% if message.tags == 'success' %}bg-green-100 text-green-800{% elif message.tags == 'error' %}bg-red-100 text-red-800{% elif message.tags == 'warning' %}bg-yellow-100 text-yellow-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    {% include 'agent/sidebar.html' %}
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-0 md:ml-64 pt-20 px-6 pb-10">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script src="{% static 'dashboard.js' %}"></script>
+</body>
+</html>

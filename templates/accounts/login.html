@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://kit.fontawesome.com/883ba9c28f.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+	<title>Login - NearUni</title>
+</head>
+
+<body class="w-full h-screen flex justify-center items-center bg-gray-50">
+
+  <div class="w-full max-w-md mx-4 rounded-3xl p-8 space-y-6 bg-white shadow-xl">
+
+    <!-- Logo / Header -->
+    <div class="text-center">
+      <p class="text-3xl font-bold text-amber-700">NearUni</p>
+      <p class="text-gray-500 mt-1">Login to your account</p>
+    </div>
+
+    <!-- Display Django Messages -->
+    {% if messages %}
+      <div class="space-y-2">
+        {% for message in messages %}
+          <p class="text-sm text-red-600 bg-red-100 px-3 py-2 rounded">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Login Form -->
+    <form class="space-y-5" method="POST">
+      {% csrf_token %}
+
+      <div>
+        <label class="text-sm font-medium text-gray-700">Username</label>
+        <input
+          name="username"
+          type="text"
+          placeholder="Enter username"
+          class="w-full p-3 mt-1 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+        >
+      </div>
+
+      <div>
+        <label class="text-sm font-medium text-gray-700">Password</label>
+        <input
+          name="password"
+          type="password"
+          placeholder="Enter password"
+          class="w-full p-3 mt-1 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+        >
+      </div>
+
+      <div class="flex justify-between items-center text-sm text-gray-600">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" class="h-4 w-4 text-amber-700 rounded border-gray-300 focus:ring-amber-500">
+          Stay Logged in
+        </label>
+        <a href="#" class="text-amber-700 hover:underline">Forgot Password?</a>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full p-3 bg-amber-700 text-white font-semibold rounded-lg hover:bg-amber-800 hover:scale-105 transition transform shadow-md"
+      >
+        Login
+      </button>
+    </form>
+
+    <!-- Sign Up Link -->
+    <p class="text-center text-gray-600">
+      Don't have an account? 
+      <a href="{% url 'register' %}" class="text-amber-700 font-semibold hover:underline">Sign Up</a>
+    </p>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base/agent_base.html' %}
+
+{% block title %}Delete Image{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-xl shadow max-w-md mx-auto mt-20 text-center">
+    <h2 class="text-xl font-bold text-red-600 mb-4">Delete Image</h2>
+    <img src="{{ image.image.url }}" class="mx-auto mb-4 w-64 h-48 object-cover rounded" alt="Apartment Image">
+    <p class="mb-4">Are you sure you want to delete this image?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Yes, Delete</button>
+        <a href="{% url 'edit_apartment' image.apartment.id %}" class="ml-4 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition">Cancel</a>
+    </form>
+</div>
+{% endblock %}

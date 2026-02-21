@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="px-5 sm:px-10 mt-6">
+
+    <!-- Search & Filters -->
+    <form method="GET" class="search space-x-3">
+
+        <!-- University Search -->
+        <input
+            type="text"
+            name="q"
+            value="{{ request.GET.q }}"
+            class="shadow-md p-5 w-60 sm:350 bg-white" placeholder="Search by University"
+        />
+
+        <!-- Featured Checkbox 
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input
+                type="checkbox"
+                name="featured"
+                value="1"
+                {% if request.GET.featured == '1' %}checked{% endif %}
+                class="h-4 w-4 text-amber-700 rounded border-gray-300 focus:ring-amber-500"
+            >
+            Featured Only
+        </label>-->
+
+        <!-- Search Button -->
+        <button
+            type="submit"
+            class="bg-amber-700 text-white px-5 py-2 rounded-lg shadow-md hover:bg-amber-800 transition flex items-center gap-2"
+        >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
+    </form>
+
+    <!-- Apartments Grid -->
+    <div class="Featured mt-5 mb-6 pl-3 pr-3">
+        <div class="cur mt-4 w-full">
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 :grid-cols-6 gap-3 place-items-center">
+                {% for apt in apartments %}
+                    <div class="container min-w-40 max-w-65 rounded-2xl relative space-y-3 bg-white shadow-xl">
+                            <!-- Verified / Unverified Badge -->
+                            <div class="absolute top-3 left-3 bg-white/90 pl-2 pr-2 py-1 rounded-full shadow text-sm font-semibold flex items-center gap-1">
+                                {% if apt.is_approved %}
+                                    Verified <i class="fa-regular fa-circle-check text-green-500"></i>
+                                {% else %}
+                                    Unverified
+                                {% endif %}
+                            </div>
+
+                            <!-- Boost Badge -->
+                            {% if apt.is_boosted %}
+                                <div class="absolute top-11 left-3 bg-amber-700 text-white px-2 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                                    Boosted
+                                </div>
+                            {% endif %}
+
+                            <a href="{% url 'apartment_detail' apt.slug %}">
+                                {% if apt.images.exists %}
+                                    <img src="{{ apt.images.first.image.url }}" alt="{{ apt.title }}" class="w-full h-48 object-cover rounded-t-2xl" />
+                                {% else %}
+                                    <img src="{% static 'images/default-apartment.jpg' %}" alt="No Image" class="w-full h-48 object-cover rounded-t-2xl" />
+                                {% endif %}
+                                <div class="details p-2">
+                                    <p class="text-md font-bold">{{ apt.title }}</p>
+                                    <p class="text-sm text-zinc-600">{{ apt.address }}</p>
+                                    <p class="text-sm text-zinc-600"><i class="fa-solid fa-location-crosshairs text-amber-700"></i>{{ apt.distance }}</p>
+                                    <p class="sm:text-md text-md "><strong class="text-amber-700">₦{{ apt.price }}/{{ apt.period }}</strong></p>
+                                </div>
+                            </a>
+                    </div>
+            
+                {% empty %}
+                    <p class="col-span-full text-center text-gray-500 py-10">No apartments found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

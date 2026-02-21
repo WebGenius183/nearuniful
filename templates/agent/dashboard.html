@@ -1,0 +1,44 @@
+{% extends 'base/agent_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="p-6">
+
+    <!-- Page Heading -->
+    <h2 class="text-3xl font-bold text-amber-700 mb-6">Welcome Back, {{ request.user.username }}</h2>
+
+    <!-- Overview Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <a href="{% url 'my_listings' %}" class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col justify-between">
+            <p class="text-gray-500 font-semibold">Total Listings</p>
+            <p class="text-2xl font-bold">{{ total_listings }}</p>
+        </a>
+
+        <a href="{% url 'my_listings' %}" class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col justify-between">
+            <p class="text-gray-500 font-semibold">Pending Listings</p>
+            <p class="text-2xl font-bold">{{ pending_listings }}</p>
+        </a>
+
+        <a href="{% url 'my_listings' %}" class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col justify-between">
+            <p class="text-gray-500 font-semibold">Featured Listings</p>
+            <p class="text-2xl font-bold">{{ featured_listings }}</p>
+        </a>
+
+        <a href="{% url 'my_listings' %}" class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition flex flex-col justify-between">
+            <p class="text-gray-500 font-semibold">Boosted Listings</p>
+            <p class="text-2xl font-bold">{{ boosted_listings }}</p>
+        </a>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <a href="{% url 'add_apartment' %}" class="bg-amber-700 hover:bg-amber-800 text-white p-6 rounded-xl shadow flex items-center justify-center font-bold text-lg transition">
+            Add New Apartment
+        </a>
+        <a href="{% url 'my_listings' %}" class="bg-blue-600 hover:bg-blue-700 text-white p-6 rounded-xl shadow flex items-center justify-center font-bold text-lg transition">
+            Manage Listings
+        </a>
+    </div>
+
+</div>
+{% endblock %}

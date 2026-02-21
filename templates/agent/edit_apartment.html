@@ -1,0 +1,44 @@
+{% extends 'base/agent_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row">
+    <div class="flex-1 p-6">
+        <h2 class="text-2xl font-bold text-amber-700 mb-6">Edit Apartment: {{ apartment.title }}</h2>
+
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            {% for img in current_images %}
+            <div class="relative border rounded">
+                <img src="{{ img.image.url }}" class="w-full h-32 object-cover rounded">
+                <form method="POST" action="{% url 'delete_apartment_image' img.id %}" class="absolute top-1 right-1">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-red-500 text-white px-1 py-0.5 rounded text-xs hover:bg-red-600 transition">X</button>
+                </form>
+            </div>
+            {% empty %}
+            <p class="text-gray-500">No images uploaded yet.</p>
+            {% endfor %}
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-xl shadow space-y-4">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div>
+                    <label class="block font-semibold mb-1">{{ field.label }}</label>
+                    {{ field|add_class:"w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-500" }}
+                </div>
+            {% endfor %}
+        
+            <div>
+                <label class="block font-semibold mb-1">Upload More Images</label>
+                {{ images_form.image|add_class:"w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-500" }}
+                <p class="text-gray-500 text-sm mt-1">You can select multiple images.</p>
+            </div>
+        
+            <button type="submit" class="bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800 transition">Update Apartment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

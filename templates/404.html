@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Not Found | NearUni</title>
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="text-center space-y-6">
+        <h1 class="text-6xl font-bold text-amber-700">404</h1>
+        <p class="text-2xl text-amber-700">Oops! The page you’re looking for does not exist.</p>
+        <a href="{% url 'home' %}" class="mt-4 inline-block bg-amber-700 text-white px-6 py-3 rounded-lg hover:bg-amber-800 transition">
+            Go Back Home
+        </a>
+    </div>
+</body>
+</html>

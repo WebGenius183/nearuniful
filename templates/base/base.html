@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://kit.fontawesome.com/883ba9c28f.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="shortcut icon" href="Favicon.png" type="image/x-icon">
+    <title>NearUni - Finding A Home Away From Home</title>
+</head>
+
+<body class="bg-gray-50">
+
+<nav class="shadow-xl relative rounded z-10 top-0 sticky">
+        <div>
+        <a href="{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" class="h-12" alt="NearUni Logo">
+        </a>
+        </div>
+
+        <div class="menu hidden sm:flex">
+            <ul>
+                <li><a href="{% url 'home' %}" class="hover:text-amber-700 transition">Home</a></li>
+                <li><a href="{% url 'apartment_list' %}" class="hover:text-amber-700 transition">Apartments</a></li>
+                <li><a href="{% url 'about' %}" class="hover:text-amber-700 transition">About</a></li>
+                <li><a href="{% url 'contact' %}" class="hover:text-amber-700 transition">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="social flex justify-center space-x-5 hidden sm:flex">
+            {% if user.is_authenticated %}
+                    {% if user.agent %}
+                    <p><a href="{% url 'agent_dashboard' %}" class="text-amber-700 font-semibold transition">Dashboard</a></p>
+                    {% endif %}
+                    <p><a href="{% url 'logout' %}" class="text-red-600 hover:underline transition">Logout</a></p>
+                {% else %}
+                    <p><a href="{% url 'login' %}" class="hover:text-amber-700 transition">Login</a></p>
+                    <p><a href="{% url 'register' %}" class="bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition">Lease your Home</a></p>
+                {% endif %}
+        </div>
+
+        <div class="sm:hidden relative justify-center flex" id="icon">
+            <i class="open fa-solid fa-bars text-amber-700 text-xl cursor-pointer hover:text-black"></i>
+            <i class="close absolute z-10 fa-solid fa-x text-amber-700 text-xl cursor-pointer hover:text-black"></i>
+        </div>
+
+        <div id="menu" class="hidden sm:hidden  absolute w-full h-svh flex bg-white top-0 right-0">
+            <div class="w-full space-y-5 mt-10 ">
+                <ul class="text-md space-y-5 m-5">
+                    <li class="w-full h-10 bg-white shadow-md p-2 flex items-center transition delay-50 duration-300 ease-in-out hover:font-bold hover:text-amber-700"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="w-full h-10 bg-white shadow-md p-2 flex items-center transition delay-50 duration-300 ease-in-out hover:font-bold hover:text-amber-700"><a href="{% url 'apartment_list' %}">Apartments</a></li>
+                    <li class="w-full h-10 bg-white shadow-md p-2 flex items-center transition delay-50 duration-300 ease-in-out hover:font-bold hover:text-amber-700"><a href="{% url 'about' %}">About Us</a></li>
+                    <li class="w-full h-10 bg-white shadow-md p-2 flex items-center transition delay-50 duration-300 ease-in-out hover:font-bold hover:text-amber-700"><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+                <div class="social flex justify-center space-x-5">
+                {% if user.is_authenticated %}
+                    {% if user.agent %}
+                    <p class="text-lg text-amber-700 cursor-pointer"><a href="{% url 'agent_dashboard' %}" class="text-amber-700 font-semibold transition">Dashboard</a></p>
+                    {% endif %}
+                    <p class="text-lg text-amber-700 cursor-pointer"><a href="{% url 'logout' %}" class="text-red-600 hover:underline transition">Logout</a></p>
+                {% else %}
+                    <p class="text-lg text-amber-700 cursor-pointer"><a href="{% url 'login' %}" class="hover:text-amber-700 transition">Login</a></p>
+                    <p class="text-lg text-amber-700 cursor-pointer"><a href="{% url 'register' %}" class="bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition">Lease your Home</a></p>
+                {% endif %}
+                </div>
+
+            </div>
+        </div>
+</nav>
+
+
+
+{% if messages %}
+    <div class="max-w-5xl mx-auto mt-4 px-4">
+        {% for message in messages %}
+            <div class="p-4 mb-3 rounded-lg shadow 
+                {% if message.tags == 'success' %}
+                    bg-green-100 text-green-700
+                {% elif message.tags == 'error' %}
+                    bg-red-100 text-red-700
+                {% elif message.tags == 'warning' %}
+                    bg-yellow-100 text-yellow-700
+                {% else %}
+                    bg-blue-100 text-blue-700
+                {% endif %}
+            ">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% block content %}
+{% endblock %}
+
+
+<footer class="mt-16 bg-white shadow-inner py-10 text-center space-y-6">
+
+    <div>
+        <a href="{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" class="h-12 mx-auto" alt="">
+        </a>
+    </div>
+
+    <ul class="flex justify-center space-x-6 text-amber-700 font-semibold">
+        <li><a href="{% url 'apartment_list' %}">Apartments</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+
+    <p class="text-gray-500 text-sm">
+        © 2026 NearUni. All rights reserved.
+    </p>
+
+</footer>
+
+<script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>

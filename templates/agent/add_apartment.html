@@ -1,0 +1,86 @@
+{% extends 'base/agent_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="flex justify-center px-4 sm:px-8 lg:px-12 mt-10 mb-16">
+
+    <!-- Main Form Card -->
+    <div class="w-full max-w-4xl bg-white p-6 sm:p-10 rounded-3xl shadow-xl border border-gray-100">
+
+        <h2 class="text-3xl font-bold text-amber-700 mb-8">
+            Add New Apartment
+        </h2>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-8">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Form Fields Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for field in form %}
+                <div class="flex flex-col md:col-span-1 {% if field.name == 'description' %}md:col-span-2{% endif %}">
+                    
+                    <label class="mb-2 text-sm font-semibold text-gray-700">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field|add_class:"w-full border border-gray-300 rounded-xl p-3 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200" }}
+
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ field.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="border-t pt-6">
+                <label class="block mb-3 text-sm font-semibold text-gray-700">
+                    Apartment Images
+                </label>
+
+                <div id="uploadBox"
+                    class="relative border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center hover:border-amber-500 transition cursor-pointer">
+
+                    <input 
+                        type="file" 
+                        id="imageInput"
+                        name="images" 
+                        multiple 
+                        accept="image/*"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    >
+
+                    <div class="space-y-2">
+                        <p class="text-gray-600 font-medium">
+                            Click to upload or drag images here
+                        </p>
+                        <p class="text-sm text-gray-400">
+                            You can upload multiple images (Max 10)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Preview Grid -->
+                <div id="previewContainer"
+                    class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-4">
+                <button 
+                    type="submit" 
+                    class="w-full md:w-auto px-8 py-3 bg-amber-700 text-white font-semibold rounded-xl shadow-lg hover:bg-amber-800 hover:shadow-xl transition duration-200"
+                >
+                    Add Apartment
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

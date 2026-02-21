@@ -1,0 +1,253 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="contain h-auto md:ml-7 md:mr-7 p-10 md:flex justify-center md:space-x-6 relative space-y-6">
+
+    <div class="md:w-3/5 relative overflow-hidden rounded-2xl">
+    
+        <div id="slider" class="flex transition-transform duration-500 ease-in-out">
+            {% for image in apartment.images.all %}
+                <img class="w-full flex-shrink-0 object-cover"
+                    src="{{ image.image.url }}"
+                    alt="{{ apartment.title }}">
+            {% empty %}
+                <img class="w-full flex-shrink-0 object-cover"
+                    src="{% static 'default.jpg' %}"
+                    alt="No Image">
+            {% endfor %}
+        </div>
+
+        {% if apartment.images.count > 1 %}
+        <button id="prevBtn"
+            class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-full">
+            ❮
+        </button>
+
+        <button id="nextBtn"
+            class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-full">
+            ❯
+        </button>
+        {% endif %}
+
+    </div>
+
+    <!-- RIGHT SIDE: DETAILS -->
+    <div class="md:w-2/5">
+        <div class="bg-white p-6 shadow-xl rounded-2xl space-y-6">
+
+            <!-- Verified Badge -->
+            {% if apartment.is_verified %}
+            <div class="w-32 h-8 bg-zinc-100 pl-4 rounded-3xl shadow-md flex items-center">
+                <p class="font-bold text-sm">
+                    Verified <i class="fa-regular fa-circle-check text-green-500"></i>
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- Title & Info -->
+            <div class="space-y-3">
+                <h2 class="text-2xl md:text-3xl font-bold text-amber-700">
+                    {{ apartment.title }}
+                </h2>
+
+                <p class="text-lg">
+                    <i class="fa-solid fa-location-arrow text-amber-700"></i>
+                    {{ apartment.address }}
+                </p>
+
+                <p class="text-lg">
+                    <i class="fa-solid fa-location-crosshairs text-amber-700"></i>
+                    {{ apartment.distance }}
+                </p>
+
+                <p class="text-lg">
+                    <span class="font-semibold">Description:</span>
+                    {{ apartment.description }}
+                </p>
+            </div>
+
+            <!-- Amenities -->
+            <div>
+                <h3 class="font-semibold text-lg mb-3 text-gray-700">Amenities</h3>
+                <ul class="grid grid-cols-2 gap-4 text-amber-700">
+                    {% for amenity in apartment.amenities.all %}
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check"></i>
+                            <span>{{ amenity.name }}</span>
+                        </li>
+                    {% empty %}
+                        <li>No amenities listed</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Price -->
+            <div>
+                <p class="text-2xl font-bold text-gray-900">
+                    ₦{{ apartment.price|floatformat:0 }}
+                    <span class="text-base font-medium">/ {{apartment.period}}</span>
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+                <!-- <a href=""
+                   class="block text-center w-full py-3 text-lg bg-amber-700 text-white font-semibold rounded-xl shadow-md hover:bg-amber-800 transition">
+                    Make Enquiry
+                </a>-->
+
+                <button onclick="this.innerText='{{ apartment.agent.phone_number }}'"
+                        class="w-full py-3 text-lg bg-amber-50 text-amber-700 font-semibold rounded-xl shadow-md hover:scale-105 transition">
+                    Show Contact Number
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- ================= AGENT SECTION ================= -->
+{% if apartment.agent %}
+<div class="max-w-5xl mx-auto px-6 mt-16">
+    <div class="bg-white shadow-xl rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
+
+        <!-- Avatar Initials -->
+        <div class="w-28 h-28 flex-shrink-0 bg-amber-100 rounded-full flex items-center justify-center text-3xl font-bold text-amber-700 shadow-lg">
+            <a href="{% url 'agent_profile' apartment.agent.id %}">
+                {{ apartment.agent.user.username }}
+            </a>
+        </div>
+
+        <div class="flex-1 text-center md:text-left space-y-3">
+
+            <div class="flex items-center justify-center md:justify-start gap-2">
+                <h3 class="text-2xl font-bold text-amber-700">
+                    {{ apartment.agent.user.username }}
+                </h3>
+
+                {% if apartment.agent.verified %}
+                    <span class="text-green-500 text-lg">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+                {% endif %}
+            </div>
+
+            <p class="text-gray-600 text-sm">
+                Property Agent
+            </p>
+
+            <div class="space-y-1 text-sm text-gray-700 mt-3">
+                <p>
+                    <i class="fa-solid fa-phone text-amber-700"></i>
+                    {{ apartment.agent.phone_number }}
+                </p>
+
+                <p>
+                    <i class="fa-solid fa-envelope text-amber-700"></i>
+                    {{ apartment.agent.user.email }}
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+
+            <a href="https://wa.me/{{ apartment.agent.whatsapp_number }}"
+               target="_blank"
+               class="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:bg-green-600 transition text-center">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+
+
+<!-- RELATED APARTMENTS -->
+<div class="mt-16 px-6">
+    <p class="text-2xl font-bold mb-6">Other Apartments</p>
+
+    <div class="Featured mt-5 mb-6 pl-1 pr-1 ">
+        <div class="cur mt-4 w-full">
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 :grid-cols-6 gap-3 place-items-center">
+                {% for apt in related_apartments %}
+                    <div class="container min-w-40 max-w-65 rounded-2xl relative space-y-3 bg-white shadow-xl">
+                            <!-- Verified / Unverified Badge -->
+                            <div class="absolute top-3 left-3 bg-white/90 pl-2 pr-2 py-1 rounded-full shadow text-sm font-semibold flex items-center gap-1">
+                                {% if apt.is_approved %}
+                                    Verified <i class="fa-regular fa-circle-check text-green-500"></i>
+                                {% else %}
+                                    Unverified
+                                {% endif %}
+                            </div>
+
+                            <!-- Boost Badge -->
+                            {% if apt.is_boosted %}
+                                <div class="absolute top-11 left-3 bg-amber-700 text-white px-2 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                                    Boosted
+                                </div>
+                            {% endif %}
+
+                            <a href="{% url 'apartment_detail' apt.slug %}">
+                                {% if apt.images.exists %}
+                                    <img src="{{ apt.images.first.image.url }}" alt="{{ apt.title }}" class="w-full h-48 object-cover rounded-t-2xl" />
+                                {% else %}
+                                    <img src="{% static 'images/default-apartment.jpg' %}" alt="No Image" class="w-full h-48 object-cover rounded-t-2xl" />
+                                {% endif %}
+                                <div class="details p-2">
+                                    <p class="text-md font-bold">{{ apt.title }}</p>
+                                    <p class="text-sm text-zinc-600">{{ apt.address }}</p>
+                                    <p class="text-sm text-zinc-600"><i class="fa-solid fa-location-crosshairs text-amber-700"></i>{{ apt.distance }}</p>
+                                    <p class="sm:text-md text-md "><strong class="text-amber-700">₦{{ apt.price }}/{{ apt.period }}</strong></p>
+                                </div>
+                            </a>
+                    </div>
+            
+                {% empty %}
+                    <p class="col-span-full text-center text-gray-500 py-10">No apartments found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const slider = document.getElementById("slider");
+        const images = slider.children;
+        const totalImages = images.length;
+
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+
+        let index = 0;
+
+        function updateSlide() {
+            slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener("click", function () {
+                index = (index + 1) % totalImages;
+                updateSlide();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener("click", function () {
+                index = (index - 1 + totalImages) % totalImages;
+                updateSlide();
+            });
+        }
+
+    });
+</script>
+
+{% endblock %}

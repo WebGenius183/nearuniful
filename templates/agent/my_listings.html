@@ -1,0 +1,102 @@
+{% extends 'base/agent_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="p-6">
+
+    <!-- Page Heading -->
+    <h2 class="text-3xl font-bold text-amber-700 mb-6">My Listings</h2>
+
+    <!-- Desktop Table -->
+    <div class="hidden md:block overflow-x-auto bg-white rounded-2xl shadow-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-amber-700 text-white">
+                <tr>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">#</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">Title</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">University</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">Price</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold">Featured</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold">Boost</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold">Created At</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for apt in apartments %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-2 text-sm">{{ forloop.counter }}</td>
+                    <td class="px-4 py-2 text-sm font-semibold">{{ apt.title }}</td>
+                    <td class="px-4 py-2 text-sm">{{ apt.university.name }}</td>
+                    <td class="px-4 py-2 text-sm">₦{{ apt.price }}</td>
+                    <td class="px-4 py-2 text-center text-sm">{% if apt.is_featured %}⭐{% else %}❌{% endif %}</td>
+                    <td class="px-4 py-2 text-center text-sm">
+                        {% if apt.is_boosted %}
+                            ⚡
+                        {% else %}
+                            ❌
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-2 text-sm">{{ apt.created_at|date:"d M Y" }}</td>
+                    <td class="px-4 py-2 flex flex-wrap gap-2 justify-center">
+                        <a href="{% url 'edit_apartment' apt.id %}" class="bg-amber-700 hover:bg-amber-800 text-white px-3 py-1 rounded text-sm transition">Edit</a>
+                        <a href="{% url 'delete_apartment' apt.id %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition">Delete</a>
+
+                        {% if not apt.is_featured %}
+                        <a href="{% url 'request_feature_payment' apt.id %}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">Feature</a>
+                        {% endif %}
+
+                        {% if not apt.is_boosted %}
+                        <a href="{% url 'request_boost_payment' apt.id %}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Boost</a>
+                        {% else %}
+                        <span class="px-2 py-1 rounded bg-green-600 text-gray-600 text-xs">Boosted</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="px-4 py-6 text-center text-gray-500 font-medium">You have no apartments listed yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="md:hidden flex flex-col gap-4">
+        {% for apt in apartments %}
+        <div class="bg-white rounded-2xl shadow p-4 space-y-2">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg">{{ apt.title }}</h3>
+                <span class="text-sm text-gray-500">{{ apt.created_at|date:"d M Y" }}</span>
+            </div>
+            <p class="text-sm"><strong>University:</strong> {{ apt.university.name }}</p>
+            <p class="text-sm"><strong>Price:</strong> ₦{{ apt.price }}</p>
+            <div class="flex flex-wrap gap-2 text-sm">
+                <span class="px-2 py-1 rounded {{ apt.is_approved|yesno:'bg-green-100 bg-red-100' }} {{ apt.is_approved|yesno:'text-green-700 text-red-700' }}">
+                    {% if apt.is_approved %}Approved{% else %}Pending{% endif %}
+                </span>
+                <span class="px-2 py-1 rounded {{ apt.is_featured|yesno:'bg-amber-100 bg-gray-100' }} {{ apt.is_featured|yesno:'text-amber-700 text-gray-600' }}">
+                    {% if apt.is_featured %}Featured{% else %}Not Featured{% endif %}
+                </span>
+                <span class="px-2 py-1 rounded {{ apt.is_boosted|yesno:'bg-blue-100 bg-gray-100' }} {{ apt.is_boosted|yesno:'text-blue-700 text-gray-600' }}">
+                    {% if apt.is_boosted %}Boosted{% else %}Not Boosted{% endif %}
+                </span>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-2">
+                <a href="{% url 'edit_apartment' apt.id %}" class="bg-amber-700 hover:bg-amber-800 text-white px-3 py-1 rounded text-sm transition">Edit</a>
+                <a href="{% url 'delete_apartment' apt.id %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition">Delete</a>
+                {% if not apt.is_featured %}
+                <a href="{% url 'request_feature_payment' apt.id %}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">Feature</a>
+                {% endif %}
+                {% if not apt.is_boosted %}
+                <a href="{% url 'request_boost_payment' apt.id %}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Boost</a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-gray-500 font-medium mt-4">You have no apartments listed yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
