@@ -16,19 +16,17 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(DEBUG=(bool, False))
-environ.Env.read_env(os.path.join(BASE_DIR, 'env'))
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = env('SECRET_KEY')
-SECRET_KEY = "django-insecure-gy20%9x%a2f-9@%25@8@&q3j3th*p&#m*5mn%+0!n+-79jv6n2"
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = env.bool('DEBUG', default=False)
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 ALLOWED_HOSTS = ['*']
 
 
@@ -135,25 +133,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # PAYSTACK
 
-#PAYSTACK_PUBLIC_KEY = env('PAYSTACK_PUBLIC_KEY')
-PAYSTACK_PUBLIC_KEY = "pk_live_5c9616f48e6c942efda528da39357b347b5ac0f5"
-PAYSTACK_SECRET_KEY = "sk_live_40a0c91c903102c390dbb74a45784c725e647dd2"
+PAYSTACK_PUBLIC_KEY = env('PAYSTACK_PUBLIC_KEY')
+PAYSTACK_SECRET_KEY = env('PAYSTACK_SECRET_KEY')
 PAYSTACK_INITIALIZE_URL = "https://api.paystack.co/transaction/initialize"
 PAYSTACK_VERIFY_URL = "https://api.paystack.co/transaction/verify/"
 
 # Email Setup
 DEFAULT_FROM_EMAIL = "nearunioff@gmail.com"
 
-#EMAIL_BACKEND = env('EMAIL_BACKEND')
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-#EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_HOST = "smtp.gmail.com"
-#EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_PORT = 587
-#EMAIL_USE_TLS = env('EMAIL_USE_TLS')
-#EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-#EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "nearunioff@gmail.com"
-EMAIL_HOST_PASSWORD = "rplmdtirohkwscll"
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
