@@ -14,6 +14,12 @@ from django.conf.urls import handler404
 from .models import Apartment, ApartmentImage, Agent, Payment
 from .forms import AgentRegisterForm, ProfileForm, ApartmentForm, ApartmentImageForm, ContactForm
 
+from django.http import HttpResponse
+from django.urls import path
+
+def health(request):
+    return HttpResponse("OK")
+
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
