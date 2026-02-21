@@ -143,9 +143,12 @@ PAYSTACK_VERIFY_URL = "https://api.paystack.co/transaction/verify/"
 # Email Setup
 DEFAULT_FROM_EMAIL = "nearunioff@gmail.com"
 
-EMAIL_BACKEND = env('EMAIL_BACKEND')
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
+#EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST = "smtp.gmail.com"
+#EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_PORT = 587
 EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
