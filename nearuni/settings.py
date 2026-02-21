@@ -27,7 +27,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
-ALLOWED_HOSTS = ['nearuni.xyz', 'www.nearuni.xyz]
+ALLOWED_HOSTS = ['nearuni.xyz', 'www.nearuni.xyz']
 
 
 # Application definition
